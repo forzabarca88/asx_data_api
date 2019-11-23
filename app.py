@@ -16,9 +16,10 @@ def precache_data():
     with open('asx.csv', 'r', newline='') as f:
         csv_data = list(csv.reader(f))
     csv_data = [line[1] for line in csv_data[3:]]
-    #test = list(map(get_data, csv_data))
-    #for c in csv_data:
-    #    get_data(c)
+    try:
+        os.mkdir('data')
+    except:
+        pass
     with multiprocessing.Pool() as pool:
         pool.map(get_data, csv_data)
 
@@ -61,19 +62,6 @@ def get_company_data(id):
             raise requests.RequestException('Abnormal response: {}'.format(data))
     except Exception as ex:
         return jsonify('{}'.format(ex)), 404
-
-""" @app.route('/company/<id>', methods=['GET']) 
-def get_company_data(id):
-    #html = requests.get('https://www.asx.com.au/asx/share-price-research/company/{}'.format(id)).text
-    #soup = BeautifulSoup(html, 'html.parser')
-    try:
-        data = requests.get('https://www.asx.com.au/asx/1/company/{}'.format(id)).json()
-        if 'code' in data and 'primary_share' in data:
-            return jsonify(data), 200
-        else:
-            raise requests.RequestException('Abnormal response: {}'.format(data))
-    except Exception as ex:
-        return jsonify('{}'.format(ex)), 404 """
 
 if __name__ == "__main__":
     precache_data()
