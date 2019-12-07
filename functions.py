@@ -56,4 +56,5 @@ def open_file_and_return_data(filename):
         else:
             raise requests.RequestException('Abnormal response: {}'.format(data))
     except Exception as ex:
-        return '{}'.format(ex), 404
+        print('{} - {}'.format(filename, ex))
+        return '', 404
