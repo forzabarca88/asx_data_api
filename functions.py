@@ -5,13 +5,13 @@ import os
 import datetime
 import json
 
-def make_data_dir(path='data'):
+def make_data_dir(path : str = 'data') -> None:
     try:
         os.mkdir(path)
     except Exception as e:
         print(e)
 
-def precache_all_data():
+def precache_all_data() -> None:
     url = 'https://www.asx.com.au/asx/research/ASXListedCompanies.csv'
     data = requests.get(url, allow_redirects=True).content
     with open('asx.csv', 'wb') as f:
@@ -23,13 +23,15 @@ def precache_all_data():
     with ThreadPoolExecutor() as pool:
         pool.map(get_data, csv_data)
 
-def get_today_str():
+def get_today_str() -> str:
     return str(datetime.date.today())
 
-def generate_filename(company, date_str=get_today_str(), folder='data'):
+def generate_filename(company : str, 
+                        date_str : str = get_today_str(), 
+                        folder : str = 'data') -> str:
     return os.path.join(folder, '{}_{}'.format(company, date_str))
 
-def get_data(company):
+def get_data(company : str) -> bool:
     filename = generate_filename(company)
     if os.path.exists(filename):
         print('Skipping {}...'.format(filename))
@@ -47,7 +49,7 @@ def get_data(company):
         print(json_data)
         return False
 
-def open_file_and_return_data(filename):
+def open_file_and_return_data(filename : str) -> (dict, int):
     try:
         with open(filename, 'r') as f:
             data = json.load(f)
@@ -58,3 +60,11 @@ def open_file_and_return_data(filename):
     except Exception as ex:
         print('{} - {}'.format(filename, ex))
         return '', 404
+
+def make_response(data : dict, status : int, links : list) -> dict:
+    response = {
+        "data": data,
+        "status": status,
+        "links": links
+    }
+    return response
