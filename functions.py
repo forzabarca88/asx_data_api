@@ -60,11 +60,4 @@ def open_file_and_return_data(filename : str) -> (dict, int):
     except Exception as ex:
         print('{} - {}'.format(filename, ex))
         return '', 404
-
-def make_response(data : dict, status : int, links : list) -> dict:
-    response = {
-        "data": data,
-        "status": status,
-        "links": links
-    }
-    return response
+        
