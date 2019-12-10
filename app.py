@@ -21,7 +21,7 @@ def index():
 def get_company_data(id):
     links = list()
     links.append({"rel": "self", "href": request.path})
-    functions.get_data(id)
+    functions.get_company_data(id)
     filename = functions.generate_filename(id)
     (data, status) = functions.open_file_and_return_data(filename)
     response = functions.make_response(data, status, links)

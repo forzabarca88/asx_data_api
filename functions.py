@@ -21,7 +21,7 @@ def precache_all_data() -> None:
     csv_data = [line[1] for line in csv_data[3:]]
     make_data_dir()
     with ThreadPoolExecutor() as pool:
-        pool.map(get_data, csv_data)
+        pool.map(get_company_data, csv_data)
 
 def get_today_str() -> str:
     return str(datetime.date.today())
@@ -31,7 +31,7 @@ def generate_filename(company : str,
                         folder : str = 'data') -> str:
     return os.path.join(folder, '{}_{}'.format(company, date_str))
 
-def get_data(company : str) -> bool:
+def get_company_data(company : str) -> bool:
     filename = generate_filename(company)
     if os.path.exists(filename):
         print('Skipping {}...'.format(filename))
