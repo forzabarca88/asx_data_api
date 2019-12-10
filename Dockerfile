@@ -8,7 +8,7 @@ COPY ["requirements.pip", "./"]
 #install required packages into home dir
 RUN pip install -r "requirements.pip"
 #now copy required files
-COPY ["app.py", "wsgi.py", "functions.py", "./"]
+COPY ["app.py", "wsgi.py", "functions.py", "classes.py", "./"]
 #change to non-root user
 USER docker-user
 #listen port for gunicorn
