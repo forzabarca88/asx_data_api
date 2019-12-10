@@ -16,14 +16,14 @@ class json_response(object):
         self.data = data
 
     @property
-    def value(self):
+    def value(self) -> dict:
         return {
         "data": self.data,
         "status": self.status,
         "links": self.links
         }
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return self.value
 
 
@@ -41,12 +41,12 @@ class link(object):
         self.method = method
 
     @property
-    def value(self):
+    def value(self) -> dict:
         return {
             "rel": self.rel, 
             "href": self.href, 
             "method": self.method
         }
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return self.value
