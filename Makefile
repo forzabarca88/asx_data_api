@@ -4,4 +4,4 @@ build:
 
 .PHONY: run
 run:
-	docker run -d -p 8080:8080 forzabarca88/asx_data_api
+	docker run -d -p 8080:8080 forzabarca/asx_data_api
