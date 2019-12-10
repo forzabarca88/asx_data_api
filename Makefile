@@ -1,6 +1,6 @@
 .PHONY: build
 build:
-	docker build -t forzabarca88/asx_data_api .
+	docker build -t forzabarca/asx_data_api .
 
 .PHONY: run
 run:
