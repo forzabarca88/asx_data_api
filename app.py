@@ -1,5 +1,5 @@
-from flask import Flask, jsonify, request
-import functions, classes
+from flask import Flask
+import functions
 
 def create_app() -> Flask:
     app = Flask(__name__)
@@ -7,25 +7,25 @@ def create_app() -> Flask:
 
 app = create_app()
 
-@app.route('/')
-def index():
-    links = [
-        classes.link('self', request.path).value,
-        classes.link('company', "/company/<id>").value
-    ]
-    response = classes.json_response(200, links, dict()).value
-    return (jsonify(response), 200)
 
-@app.route('/company/<id>', methods=['GET']) 
-def get_company_data(id):
-    links = [
-        classes.link('self', request.path).value
-    ]
-    functions.get_company_data(id)
-    filename = functions.generate_filename(id)
-    (data, status) = functions.open_file_and_return_data(filename)
-    response = classes.json_response(data, status, links).value
-    return (jsonify(response), 200)
+api_map = [
+    {
+        'rule': '/',
+        'view_func': functions.index,
+        'methods': ['GET']
+    },
+    {
+        'rule': '/company/<id>',
+        'view_func': functions.get_company,
+        'methods': ['GET']
+    }
+]
+
+for entry in api_map:
+    app.add_url_rule(entry['rule'], 
+                    view_func=entry['view_func'],
+                    methods=entry['methods'])
+
 
 if __name__ == "__main__":
     app.run(debug=True)

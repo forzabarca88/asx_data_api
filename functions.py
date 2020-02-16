@@ -4,6 +4,8 @@ import requests
 import os
 import datetime
 import json
+import classes
+from flask import request, Response
 
 def make_data_dir(path : str = 'data') -> None:
     try:
@@ -61,3 +63,22 @@ def open_file_and_return_data(filename : str) -> (dict, int):
         print('{} - {}'.format(filename, ex))
         return '', 404
         
+def index():
+    links = [
+        classes.link('self', request.path).value,
+        classes.link('company', "/company/<id>").value
+    ]
+    response = classes.json_response(200, links, {}).value
+    return Response(response=json.dumps(response, indent=4), 
+                    mimetype='application/json', status=200)
+
+def get_company(id):
+    links = [
+        classes.link('self', request.path).value
+    ]
+    get_company_data(id)
+    filename = generate_filename(id)
+    (data, status) = open_file_and_return_data(filename)
+    response = classes.json_response(status, links, data).value
+    return Response(response=json.dumps(response, indent=4), 
+                    mimetype='application/json', status=200)
